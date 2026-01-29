@@ -8,10 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        /* MASTER CSS - SAME AS OTHERS */
+        /* MASTER CSS */
         :root {
           --bg-body: #05050f;
           --bg-card: #0f1016;
@@ -168,152 +167,50 @@
             backdrop-filter: blur(5px);
         }
 
-        /* --- FLATPICKR DARK THEME OVERRIDE --- */
+        /* --- CUSTOM DROPDOWN (SELECT) STYLING --- */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            font-family: var(--font-family);
+            outline: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        select:focus { border-color: #6366f1; }
+        select option { background-color: var(--bg-card); color: var(--text-main); padding: 10px; }
+
+        /* --- CUSTOM FLATPICKR (CALENDAR) THEME --- */
         .flatpickr-calendar {
             background: var(--bg-card) !important;
             border: 1px solid var(--border-color) !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
-            color: white !important;
-            font-family: var(--font-family) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            color: var(--text-main) !important;
         }
+        .flatpickr-months .flatpickr-month, .flatpickr-current-month .flatpickr-monthDropdown-months, .flatpickr-current-month input.cur-year {
+            background: var(--bg-card) !important; color: var(--text-main) !important; fill: var(--text-main) !important;
+        }
+        span.flatpickr-weekday { background: var(--bg-card) !important; color: var(--text-muted) !important; }
         .flatpickr-day { color: var(--text-muted) !important; }
-        .flatpickr-day:hover { background: rgba(99, 102, 241, 0.2) !important; }
+        .flatpickr-day:hover, .flatpickr-day:focus { background: var(--bg-input) !important; border-color: var(--border-color) !important; color: var(--text-main) !important; }
         .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-            background: var(--primary-gradient) !important;
-            border-color: transparent !important;
-            color: white !important;
+            background: var(--primary-gradient) !important; border-color: transparent !important; color: #fff !important;
         }
-        .flatpickr-months .flatpickr-month { color: white !important; fill: white !important; }
-        .flatpickr-current-month .flatpickr-monthDropdown-months { color: white !important; background: var(--bg-card) !important; }
-        .flatpickr-current-month input.cur-year { color: white !important; }
-        .flatpickr-time input { color: white !important; }
-        .flatpickr-time .flatpickr-time-separator { color: white !important; }
-        .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after { border-bottom-color: var(--border-color) !important; }
-        /* --- CUSTOM DROPDOWN (SELECT) STYLING --- */
-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: var(--bg-input);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    padding: 10px 15px;
-    border-radius: 8px;
-    width: 100%;
-    cursor: pointer;
-    font-family: var(--font-family);
-    outline: none;
-    /* Custom Arrow Icon (SVG encoded) */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-select:focus {
-    border-color: #6366f1; /* Your primary color */
-}
-
-/* Fix for options on some browsers (Make dropdown list dark) */
-select option {
-    background-color: var(--bg-card);
-    color: var(--text-main);
-    padding: 10px;
-}
-
-/* --- CUSTOM FLATPICKR (CALENDAR) THEME --- */
-.flatpickr-calendar {
-    background: var(--bg-card) !important;
-    border: 1px solid var(--border-color) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-    color: var(--text-main) !important;
-}
-
-/* Header (Month/Year) */
-.flatpickr-months .flatpickr-month {
-    background: var(--bg-card) !important;
-    color: var(--text-main) !important;
-    fill: var(--text-main) !important;
-}
-
-.flatpickr-current-month .flatpickr-monthDropdown-months {
-    background: var(--bg-card) !important;
-    color: var(--text-main) !important;
-}
-
-.flatpickr-current-month input.cur-year {
-    color: var(--text-main) !important;
-}
-
-/* Weekdays */
-span.flatpickr-weekday {
-    background: var(--bg-card) !important;
-    color: var(--text-muted) !important;
-}
-
-/* Days */
-.flatpickr-day {
-    color: var(--text-muted) !important;
-}
-
-.flatpickr-day:hover, 
-.flatpickr-day:focus {
-    background: var(--bg-input) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-main) !important;
-}
-
-/* Selected Date - Use your gradient */
-.flatpickr-day.selected, 
-.flatpickr-day.startRange, 
-.flatpickr-day.endRange, 
-.flatpickr-day.selected.inRange, 
-.flatpickr-day.startRange.inRange, 
-.flatpickr-day.endRange.inRange, 
-.flatpickr-day.selected:focus, 
-.flatpickr-day.startRange:focus, 
-.flatpickr-day.endRange:focus, 
-.flatpickr-day.selected:hover, 
-.flatpickr-day.startRange:hover, 
-.flatpickr-day.endRange:hover {
-    background: var(--primary-gradient) !important;
-    border-color: transparent !important;
-    color: #fff !important;
-}
-
-/* Time Picker Section */
-.flatpickr-time {
-    border-top: 1px solid var(--border-color) !important;
-}
-
-.flatpickr-time .flatpickr-time-separator,
-.flatpickr-time .flatpickr-am-pm {
-    color: var(--text-main) !important;
-}
-
-.flatpickr-time input {
-    color: var(--text-main) !important;
-    background: var(--bg-input) !important;
-}
-
-.flatpickr-time input:hover,
-.flatpickr-time .flatpickr-am-pm:hover,
-.flatpickr-time input:focus,
-.flatpickr-time .flatpickr-am-pm:focus {
-    background: var(--bg-body) !important;
-}
-
-/* Arrows */
-.flatpickr-prev-month svg, 
-.flatpickr-next-month svg {
-    fill: var(--text-muted) !important;
-}
-.flatpickr-prev-month:hover svg, 
-.flatpickr-next-month:hover svg {
-    fill: #fff !important;
-}
-
+        .flatpickr-time { border-top: 1px solid var(--border-color) !important; }
+        .flatpickr-time .flatpickr-time-separator, .flatpickr-time .flatpickr-am-pm { color: var(--text-main) !important; }
+        .flatpickr-time input { color: var(--text-main) !important; background: var(--bg-input) !important; }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: var(--text-muted) !important; }
+        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #fff !important; }
     </style>
 </head>
 <body>
@@ -368,13 +265,16 @@ span.flatpickr-weekday {
                         <label class="label">Max Devices</label>
                         <div class="radio-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                             <label style="cursor: pointer;">
-                                <input type="radio" name="access" value="1" id="d1" checked style="display:none">
-                                <div class="radio-tile">Single Device</div>
+                                <input type="radio" name="access" value="1" id="d1" checked onchange="toggleCustomAccess(false)" style="display:none">
+                                <div class="radio-tile">1 Device</div>
                             </label>
                             <label style="cursor: pointer;">
-                                <input type="radio" name="access" value="∞" id="d_inf" style="display:none">
-                                <div class="radio-tile">Unlimited</div>
+                                <input type="radio" name="access" value="custom" id="d_custom" onchange="toggleCustomAccess(true)" style="display:none">
+                                <div class="radio-tile">Custom</div>
                             </label>
+                        </div>
+                        <div id="custom-access-container" style="display:none; margin-top: 15px;">
+                            <input type="number" id="customAccessValue" class="form-control" placeholder="Enter device limit (e.g. 5)" min="1">
                         </div>
                     </div>
 
@@ -427,6 +327,18 @@ span.flatpickr-weekday {
             setTimeout(() => { toast.className = ""; }, 3000); 
         };
 
+        // Custom Access Logic
+        window.toggleCustomAccess = (show) => {
+            const container = document.getElementById('custom-access-container');
+            const input = document.getElementById('customAccessValue');
+            if(show) {
+                container.style.display = 'block';
+                input.focus();
+            } else {
+                container.style.display = 'none';
+            }
+        };
+
         // Generator Logic
         window.generatePassword = () => { 
             const pass = Math.random().toString(36).slice(-8);
@@ -445,7 +357,6 @@ span.flatpickr-weekday {
             
             const d = new Date(); 
             d.setDate(d.getDate() + days);
-            // Update Flatpickr instance directly
             datePicker.setDate(d);
         };
 
@@ -470,26 +381,35 @@ span.flatpickr-weekday {
             }
         };
 
-                // Add User Logic
+        // Add User Logic
         window.addUser = function () {
             const u = document.getElementById("username").value.trim();
             const p = document.getElementById("password").value.trim();
-            const v = document.getElementById("validity").value; // Gets formatted string from flatpickr
+            const v = document.getElementById("validity").value; 
             
             if (!u || !p || !v) { showToast("Please fill all fields."); return; }
             
-            const access = document.querySelector('input[name="access"]:checked').value;
+            let access = document.querySelector('input[name="access"]:checked').value;
+            
+            // Handle Custom Value
+            if (access === 'custom') {
+                const customVal = document.getElementById('customAccessValue').value;
+                if (!customVal) { showToast("Please enter a device limit."); return; }
+                access = customVal;
+            }
+            
             const now = new Date();
             const pad = n => n.toString().padStart(2, '0');
             const rgtime = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
             
-            // Validity is already formatted by Flatpickr as "d-m-Y H:i"
             const userData = { username: u, password: p, status: "active", validity: v, access: access, device: "null", rgtime: rgtime, createdBy: "admin" };
             
             set(ref(db, `userinfo/${u}`), userData).then(() => {
                 showScreenshotView(userData);
                 document.getElementById("addUserForm").reset();
                 datePicker.clear();
+                document.getElementById('custom-access-container').style.display = 'none';
+                document.getElementById('d1').checked = true; // Reset radio to 1 Device
                 document.querySelectorAll('.quick-validity button').forEach(b => {
                     b.style.borderColor = 'var(--border-color)';
                     b.style.color = 'var(--text-muted)';
