@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New User</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        /* MASTER CSS - SAME AS OTHERS */
+        :root {
+          --bg-body: #05050f;
+          --bg-card: #0f1016;
+          --bg-input: #08080c;
+          --border-color: #1e1e2d;
+          --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+          --text-main: #ffffff;
+          --text-muted: #94a3b8;
+          --success: #10b981;
+          --danger: #ef4444;
+          --font-family: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        
+        body {
+          font-family: var(--font-family);
+          background-color: var(--bg-body);
+          color: var(--text-main);
+          background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          background-size: 40px 40px;
+          min-height: 100vh;
+          display: flex;
+        }
+
+        .sidebar {
+          width: 260px;
+          background: var(--bg-body);
+          border-right: 1px solid var(--border-color);
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          height: 100vh;
+          z-index: 100;
+          transition: transform 0.3s ease;
+        }
+        
+        .sidebar-header {
+          padding: 30px 25px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        
+        .sidebar-header i { font-size: 1.5rem; color: #fff; }
+        .brand-text { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; }
+        .brand-text span { color: #8b5cf6; }
+
+        .sidebar-nav { padding: 0 15px; display: flex; flex-direction: column; gap: 8px; }
+        
+        .sidebar-link {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 20px;
+          color: var(--text-muted);
+          text-decoration: none;
+          font-weight: 500;
+          border-radius: 12px;
+          transition: all 0.3s ease;
+        }
+        
+        .sidebar-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+        
+        .sidebar-link.active {
+          background: rgba(99, 102, 241, 0.15);
+          color: #8b5cf6;
+          border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        .sidebar-link.active i { color: #8b5cf6; }
+
+        .main-content {
+          flex: 1;
+          margin-left: 260px;
+          padding: 40px;
+          max-width: 1600px;
+        }
+
+        .card {
+          background: var(--bg-card);
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+          padding: 30px;
+          margin-bottom: 25px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 0.9rem; }
+        
+        .form-control {
+          width: 100%;
+          background: var(--bg-input);
+          border: 1px solid var(--border-color);
+          color: #fff;
+          padding: 14px 16px;
+          border-radius: 10px;
+          font-size: 0.95rem;
+          transition: 0.3s;
+        }
+        
+        .form-control:focus {
+          border-color: #6366f1;
+          box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn {
+          cursor: pointer; border: none; padding: 12px 24px; border-radius: 10px;
+          font-weight: 600; font-size: 0.95rem; transition: 0.3s; display: inline-flex;
+          align-items: center; justify-content: center; gap: 8px;
+        }
+
+        .btn-primary {
+          background: var(--primary-gradient); color: white;
+          box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); width: 100%;
+        }
+        
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); }
+        .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+        
+        .mobile-toggle { display: none; position: fixed; top: 20px; right: 20px; z-index: 200; background: var(--bg-card); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; color: white; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; display: none; backdrop-filter: blur(2px); }
+        .overlay.open { display: block; }
+        
+        #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 20px; border-radius: 8px; z-index: 1004; visibility: hidden; opacity: 0; transition: 0.3s; }
+        #toast.show { visibility: visible; opacity: 1; }
+
+        @media (max-width: 1024px) {
+          .sidebar { transform: translateX(-100%); }
+          .sidebar.open { transform: translateX(0); }
+          .main-content { margin-left: 0; padding: 20px; }
+          .mobile-toggle { display: block; }
+        }
+
+        /* Radio Group Styling */
+        input[type="radio"]:checked + .radio-tile {
+            background: rgba(99, 102, 241, 0.15);
+            border-color: #6366f1;
+            color: #6366f1;
+        }
+        .radio-tile {
+            display: flex; align-items: center; justify-content: center;
+            padding: 12px; border: 1px solid var(--border-color);
+            border-radius: 10px; background: var(--bg-input);
+            cursor: pointer; transition: 0.3s; color: var(--text-muted);
+        }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+            z-index: 999; display: none; justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        /* --- FLATPICKR DARK THEME OVERRIDE --- */
+        .flatpickr-calendar {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+            color: white !important;
+            font-family: var(--font-family) !important;
+        }
+        .flatpickr-day { color: var(--text-muted) !important; }
+        .flatpickr-day:hover { background: rgba(99, 102, 241, 0.2) !important; }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+            background: var(--primary-gradient) !important;
+            border-color: transparent !important;
+            color: white !important;
+        }
+        .flatpickr-months .flatpickr-month { color: white !important; fill: white !important; }
+        .flatpickr-current-month .flatpickr-monthDropdown-months { color: white !important; background: var(--bg-card) !important; }
+        .flatpickr-current-month input.cur-year { color: white !important; }
+        .flatpickr-time input { color: white !important; }
+        .flatpickr-time .flatpickr-time-separator { color: white !important; }
+        .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after { border-bottom-color: var(--border-color) !important; }
+    </style>
+</head>
+<body>
+    <button class="mobile-toggle" id="sidebarToggle"><i class="fas fa-bars"></i></button>
+    
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <i class="fas fa-layer-group"></i>
+            <div class="brand-text">ZENX <span>ADMIN</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-link"><i class="fas fa-chart-pie"></i> Overview</a>
+            <a href="admin.html" class="sidebar-link active"><i class="fas fa-user-plus"></i> Add User</a>
+            <a href="dashboard.html" class="sidebar-link"><i class="fas fa-users-cog"></i> Manage Users</a>
+            <a href="staff_management.html" class="sidebar-link"><i class="fas fa-user-shield"></i> Manage Staff</a>
+            <a href="settings.html" class="sidebar-link"><i class="fas fa-cog"></i> Settings</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+            <div class="card" style="width: 100%; max-width: 500px; padding: 40px;">
+                <h2 style="text-align: center; margin-bottom: 30px;">Create New User</h2>
+                
+                <form id="addUserForm" onsubmit="event.preventDefault(); addUser();">
+                    <div class="form-group">
+                        <label class="label">Username</label>
+                        <input type="text" id="username" class="form-control" placeholder="Enter username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label">Password</label>
+                        <div style="position: relative;">
+                            <input type="password" id="password" class="form-control" placeholder="Enter password" required>
+                            <button type="button" onclick="generatePassword()" style="position: absolute; right: 10px; top: 12px; background: none; border: none; color: #8b5cf6; cursor: pointer; font-size: 0.85rem; font-weight: 600;">Generate</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label">Expiration Date</label>
+                        <input type="text" id="validity" class="form-control" placeholder="Select Date & Time" required>
+                        <div class="quick-validity" style="margin-top: 10px; display: flex; gap: 8px;">
+                            <button type="button" onclick="setValidity(1, this)" style="background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">1 Day</button>
+                            <button type="button" onclick="setValidity(7, this)" style="background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">1 Week</button>
+                            <button type="button" onclick="setValidity(30, this)" style="background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">1 Month</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="label">Max Devices</label>
+                        <div class="radio-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="cursor: pointer;">
+                                <input type="radio" name="access" value="1" id="d1" checked style="display:none">
+                                <div class="radio-tile">Single Device</div>
+                            </label>
+                            <label style="cursor: pointer;">
+                                <input type="radio" name="access" value="∞" id="d_inf" style="display:none">
+                                <div class="radio-tile">Unlimited</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Generate User</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="screenshot-view" class="modal-overlay">
+        <div class="card" style="width: 350px; margin: 0;">
+            <h3 style="text-align:center; margin-bottom: 20px;">User Created</h3>
+            <div id="ss-content" style="background: #000; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-family: monospace; font-size: 0.9rem;">
+                <p style="margin-bottom:8px; color:#888;">USERNAME: <span id="ss-username" style="color: #fff; float:right;"></span></p>
+                <p style="margin-bottom:8px; color:#888;">PASSWORD: <span id="ss-password" style="color: #fff; float:right;"></span></p>
+                <p style="margin-bottom:8px; color:#888;">VALID UNTIL: <span id="ss-validity" style="color: #fff; float:right;"></span></p>
+            </div>
+            <button class="btn btn-primary" onclick="shareCredentials()">Copy Credentials</button>
+            <button class="btn btn-danger" onclick="hideScreenshotView()" style="width: 100%; margin-top: 10px;">Close</button>
+        </div>
+    </div>
+    
+    <div id="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script type="module">
+        import { db } from "./firebase-config.js";
+        import { ref, set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+        
+        // Init Date Picker
+        const datePicker = flatpickr("#validity", {
+            enableTime: true,
+            dateFormat: "d-m-Y H:i",
+            time_24hr: true,
+            minDate: "today"
+        });
+
+        // Sidebar Logic
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        const toggleSidebar = () => { sidebar.classList.toggle('open'); overlay.classList.toggle('open'); };
+        document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Toast Helper
+        window.showToast = (message) => { 
+            const toast = document.getElementById("toast"); 
+            toast.textContent = message; 
+            toast.className = "show"; 
+            setTimeout(() => { toast.className = ""; }, 3000); 
+        };
+
+        // Generator Logic
+        window.generatePassword = () => { 
+            const pass = Math.random().toString(36).slice(-8);
+            const passField = document.getElementById('password');
+            passField.value = pass;
+            passField.type = 'text'; 
+        };
+
+        window.setValidity = (days, el) => {
+            document.querySelectorAll('.quick-validity button').forEach(b => {
+                b.style.borderColor = 'var(--border-color)';
+                b.style.color = 'var(--text-muted)';
+            });
+            el.style.borderColor = '#6366f1';
+            el.style.color = '#fff';
+            
+            const d = new Date(); 
+            d.setDate(d.getDate() + days);
+            // Update Flatpickr instance directly
+            datePicker.setDate(d);
+        };
+
+        // Modal Logic
+        let currentUserData = {};
+        window.showScreenshotView = (d) => {
+            currentUserData = d;
+            document.getElementById('ss-username').textContent = d.username;
+            document.getElementById('ss-password').textContent = d.password;
+            document.getElementById('ss-validity').textContent = d.validity;
+            document.getElementById('screenshot-view').style.display = 'flex';
+        };
+        window.hideScreenshotView = () => document.getElementById('screenshot-view').style.display = 'none';
+
+        window.shareCredentials = async () => {
+            const shareText = `Login Details:\nUsername: ${currentUserData.username}\nPassword: ${currentUserData.password}\nValid Until: ${currentUserData.validity}`;
+            if (navigator.share) {
+                try { await navigator.share({ title: 'User Credentials', text: shareText }); }
+                catch (err) { /* ignore */ }
+            } else {
+                navigator.clipboard.writeText(shareText).then(() => showToast("Credentials copied!"));
+            }
+        };
+
+        // Add User Logic
+        window.addUser = function () {
+            const u = document.getElementById("username").value.trim();
+            const p = document.getElementById("password").value.trim();
+            const v = document.getElementById("validity").value; // Gets formatted string from flatpickr
+            
+            if (!u || !p || !v) { showToast("Please fill all fields."); return; }
+            
+            const access = document.querySelector('input[name="access"]:checked').value;
+            const now = new Date();
+            const pad = n => n.toString().padStart(2, '0');
+            const rgtime = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+            
+            // Validity is already formatted by Flatpickr as "d-m-Y H:i"
+            const userData = { username: u, password: p, status: "active", validity: v, access: access, device: "null", rgtime: rgtime, createdBy: "admin" };
+            
+            set(ref(db, `userinfo/${u}`), userData).then(() => {
+                showScreenshotView(userData);
+                document.getElementById("addUserForm").reset();
+                datePicker.clear();
+                document.querySelectorAll('.quick-validity button').forEach(b => {
+                    b.style.borderColor = 'var(--border-color)';
+                    b.style.color = 'var(--text-muted)';
+                });
+            }).catch((error) => showToast("Error: " + error.message));
+        };
+    </script>
+</body>
+</html>
