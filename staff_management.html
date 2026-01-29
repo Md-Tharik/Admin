@@ -8,8 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         /* MASTER CSS */
         :root {
@@ -39,7 +38,6 @@
           display: flex;
         }
 
-        /* Sidebar */
         .sidebar {
           width: 260px;
           background: var(--bg-body);
@@ -86,7 +84,6 @@
         }
         .sidebar-link.active i { color: #8b5cf6; }
 
-        /* Main Content */
         .main-content {
           flex: 1;
           margin-left: 260px;
@@ -98,7 +95,6 @@
         .page-title { font-size: 2rem; font-weight: 700; margin-bottom: 5px; }
         .page-subtitle { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* Cards & Grid */
         .user-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
         
         .card {
@@ -110,7 +106,6 @@
           box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
 
-        /* Forms */
         .form-group { margin-bottom: 20px; }
         .label { display: block; color: var(--text-muted); margin-bottom: 8px; font-size: 0.9rem; }
         
@@ -127,7 +122,6 @@
         .form-control:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
         .form-control[readonly] { opacity: 0.7; cursor: not-allowed; }
 
-        /* Buttons */
         .btn {
           cursor: pointer; border: none; padding: 12px 24px; border-radius: 10px;
           font-weight: 600; font-size: 0.95rem; transition: 0.3s; display: inline-flex;
@@ -141,12 +135,10 @@
         
         .btn-full { width: 100%; }
 
-        /* Utilities */
         .mobile-toggle { display: none; position: fixed; top: 20px; right: 20px; z-index: 200; background: var(--bg-card); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; color: white; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 90; display: none; backdrop-filter: blur(2px); }
         .overlay.open { display: block; }
         
-        /* Modal Overlay */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.8);
             z-index: 999; display: none; justify-content: center; align-items: center;
@@ -169,151 +161,18 @@
           .page-header { flex-direction: column; align-items: start; gap: 20px; }
         }
 
-        /* --- ADDED: FLATPICKR DARK THEME OVERRIDE --- */
-        .flatpickr-calendar {
-            background: var(--bg-card) !important;
-            border: 1px solid var(--border-color) !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
-            color: white !important;
-            font-family: var(--font-family) !important;
-        }
+        /* --- FLATPICKR CUSTOM THEME --- */
+        .flatpickr-calendar { background: var(--bg-card) !important; border: 1px solid var(--border-color) !important; box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important; color: var(--text-main) !important; }
+        .flatpickr-months .flatpickr-month, .flatpickr-current-month .flatpickr-monthDropdown-months, .flatpickr-current-month input.cur-year { background: var(--bg-card) !important; color: var(--text-main) !important; fill: var(--text-main) !important; }
+        span.flatpickr-weekday { background: var(--bg-card) !important; color: var(--text-muted) !important; }
         .flatpickr-day { color: var(--text-muted) !important; }
-        .flatpickr-day:hover { background: rgba(99, 102, 241, 0.2) !important; }
-        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-            background: var(--primary-gradient) !important;
-            border-color: transparent !important;
-            color: white !important;
-        }
-        .flatpickr-months .flatpickr-month { color: white !important; fill: white !important; }
-        .flatpickr-current-month .flatpickr-monthDropdown-months { color: white !important; background: var(--bg-card) !important; }
-        .flatpickr-current-month input.cur-year { color: white !important; }
-        .flatpickr-time input { color: white !important; }
-        .flatpickr-time .flatpickr-time-separator { color: white !important; }
-        .flatpickr-calendar.arrowTop:before, .flatpickr-calendar.arrowTop:after { border-bottom-color: var(--border-color) !important; }
-        /* --- CUSTOM DROPDOWN (SELECT) STYLING --- */
-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: var(--bg-input);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    padding: 10px 15px;
-    border-radius: 8px;
-    width: 100%;
-    cursor: pointer;
-    font-family: var(--font-family);
-    outline: none;
-    /* Custom Arrow Icon (SVG encoded) */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-select:focus {
-    border-color: #6366f1; /* Your primary color */
-}
-
-/* Fix for options on some browsers (Make dropdown list dark) */
-select option {
-    background-color: var(--bg-card);
-    color: var(--text-main);
-    padding: 10px;
-}
-
-/* --- CUSTOM FLATPICKR (CALENDAR) THEME --- */
-.flatpickr-calendar {
-    background: var(--bg-card) !important;
-    border: 1px solid var(--border-color) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
-    color: var(--text-main) !important;
-}
-
-/* Header (Month/Year) */
-.flatpickr-months .flatpickr-month {
-    background: var(--bg-card) !important;
-    color: var(--text-main) !important;
-    fill: var(--text-main) !important;
-}
-
-.flatpickr-current-month .flatpickr-monthDropdown-months {
-    background: var(--bg-card) !important;
-    color: var(--text-main) !important;
-}
-
-.flatpickr-current-month input.cur-year {
-    color: var(--text-main) !important;
-}
-
-/* Weekdays */
-span.flatpickr-weekday {
-    background: var(--bg-card) !important;
-    color: var(--text-muted) !important;
-}
-
-/* Days */
-.flatpickr-day {
-    color: var(--text-muted) !important;
-}
-
-.flatpickr-day:hover, 
-.flatpickr-day:focus {
-    background: var(--bg-input) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-main) !important;
-}
-
-/* Selected Date - Use your gradient */
-.flatpickr-day.selected, 
-.flatpickr-day.startRange, 
-.flatpickr-day.endRange, 
-.flatpickr-day.selected.inRange, 
-.flatpickr-day.startRange.inRange, 
-.flatpickr-day.endRange.inRange, 
-.flatpickr-day.selected:focus, 
-.flatpickr-day.startRange:focus, 
-.flatpickr-day.endRange:focus, 
-.flatpickr-day.selected:hover, 
-.flatpickr-day.startRange:hover, 
-.flatpickr-day.endRange:hover {
-    background: var(--primary-gradient) !important;
-    border-color: transparent !important;
-    color: #fff !important;
-}
-
-/* Time Picker Section */
-.flatpickr-time {
-    border-top: 1px solid var(--border-color) !important;
-}
-
-.flatpickr-time .flatpickr-time-separator,
-.flatpickr-time .flatpickr-am-pm {
-    color: var(--text-main) !important;
-}
-
-.flatpickr-time input {
-    color: var(--text-main) !important;
-    background: var(--bg-input) !important;
-}
-
-.flatpickr-time input:hover,
-.flatpickr-time .flatpickr-am-pm:hover,
-.flatpickr-time input:focus,
-.flatpickr-time .flatpickr-am-pm:focus {
-    background: var(--bg-body) !important;
-}
-
-/* Arrows */
-.flatpickr-prev-month svg, 
-.flatpickr-next-month svg {
-    fill: var(--text-muted) !important;
-}
-.flatpickr-prev-month:hover svg, 
-.flatpickr-next-month:hover svg {
-    fill: #fff !important;
-}
+        .flatpickr-day:hover, .flatpickr-day:focus { background: var(--bg-input) !important; border-color: var(--border-color) !important; color: var(--text-main) !important; }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background: var(--primary-gradient) !important; border-color: transparent !important; color: #fff !important; }
+        .flatpickr-time { border-top: 1px solid var(--border-color) !important; }
+        .flatpickr-time .flatpickr-time-separator, .flatpickr-time .flatpickr-am-pm { color: var(--text-main) !important; }
+        .flatpickr-time input { color: var(--text-main) !important; background: var(--bg-input) !important; }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: var(--text-muted) !important; }
+        .flatpickr-prev-month:hover svg, .flatpickr-next-month:hover svg { fill: #fff !important; }
 
     </style>
 </head>
@@ -385,7 +244,6 @@ span.flatpickr-weekday {
         import { db } from "./firebase-config.js";
         import { ref, onValue, get, set, update, remove } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
         
-        // UI Helpers
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
         const toggleSidebar = () => { sidebar.classList.toggle('open'); overlay.classList.toggle('open'); };
@@ -394,23 +252,21 @@ span.flatpickr-weekday {
         
         window.showToast = (msg) => { const t = document.getElementById("toast"); t.textContent = msg; t.className = "show"; setTimeout(() => t.className = "", 3000); };
 
-        // ADDED: Initialize Flatpickr
+        // Force disableMobile to prevent native picker on phones
         const staffDatePicker = flatpickr("#staff-expiry", {
             dateFormat: "Y-m-d",
             minDate: "today",
-            theme: "dark"
+            disableMobile: true 
         });
 
-        // Staff Logic
         const staffListEl = document.getElementById('staffList');
         const staffModal = document.getElementById('staff-modal');
         const modalTitle = document.getElementById('modal-title');
         let isEditMode = false;
 
-        // Modal Functions
         const openModal = (mode = 'add', staffData = null) => {
             document.getElementById('staff-form').reset();
-            staffDatePicker.clear(); // Clear picker
+            staffDatePicker.clear();
             
             if (mode === 'add') {
                 isEditMode = false;
@@ -423,7 +279,6 @@ span.flatpickr-weekday {
                 document.getElementById('staff-username').readOnly = true;
                 document.getElementById('staff-password').value = staffData.password;
                 document.getElementById('staff-credits').value = staffData.credits;
-                // Update picker with existing date
                 if(staffData.credit_expiry) staffDatePicker.setDate(staffData.credit_expiry);
             }
             staffModal.style.display = 'flex';
@@ -432,7 +287,6 @@ span.flatpickr-weekday {
         window.closeModal = () => { staffModal.style.display = 'none'; };
         document.getElementById('addStaffBtn').addEventListener('click', () => openModal('add'));
 
-        // Save Logic
         document.getElementById('save-staff-btn').addEventListener('click', async () => {
             const username = document.getElementById('staff-username').value.trim();
             const password = document.getElementById('staff-password').value.trim();
@@ -455,7 +309,6 @@ span.flatpickr-weekday {
             }
         });
 
-        // Render Logic
         onValue(ref(db, 'staffdata'), (snapshot) => {
             staffListEl.innerHTML = '';
             if (!snapshot.exists()) { staffListEl.innerHTML = '<div style="color:var(--text-muted)">No staff found.</div>'; return; }
@@ -466,8 +319,7 @@ span.flatpickr-weekday {
                 
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.style.margin = '0'; 
-                             // Override default card margin for grid
+                card.style.margin = '0';
                 card.innerHTML = `
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                         <h3 style="font-size:1.1rem; font-weight:700;">${username}</h3>
